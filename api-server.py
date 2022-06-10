@@ -27,7 +27,7 @@ def get_temperature():
 
 def set_fan_speed(speed):
     """Sets the parsed speed as the server''s fan speed"""
-    if speed <= 60 and speed >=0:
+    if int(speed) <= 60 and int(speed) >=0:
         out = subprocess.Popen(f"ipmitool -I lanplus -H {HOST} -U {USERNAME} -P {PASSWORD} raw 0x30 0x30 0x02 0xff 0x{speed}", shell=True, stdout=subprocess.PIPE).stdout.read()
         return speed
     else:
