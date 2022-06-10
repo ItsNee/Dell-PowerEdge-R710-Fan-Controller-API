@@ -42,7 +42,7 @@ def home():
 
 
 @app.route('/get-temperature', methods=['GET'])
-def home():
+def get_server_temperature():
     return '''<h1>{}</h1>'''.format(get_temperature())
 
 
