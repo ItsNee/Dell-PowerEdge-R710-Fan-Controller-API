@@ -31,7 +31,7 @@ def set_fan_speed(speed):
         out = subprocess.Popen(f"ipmitool -I lanplus -H {HOST} -U {USERNAME} -P {PASSWORD} raw 0x30 0x30 0x02 0xff 0x{speed}", shell=True, stdout=subprocess.PIPE).stdout.read()
         return speed
     else:
-        return "Please enter a speed inbetween 0 and 60"
+        return "ERROR!"
 
 
 @app.route('/', methods=['GET'])
@@ -46,7 +46,11 @@ def get_server_temperature():
 
 @app.route('/set-fan-speed/<speed>', methods=['GET'])
 def set_server_fan_speed(speed):
-    return '''<h1>Fan speed has been set to {}</h1>'''.format(set_fan_speed(speed))
+    result = set_fan_speed(speed)
+    if result == "ERROR!":
+        return '''<h1>Error! Please enter a speed inbetween 0 and 60'''
+    else:    
+        return '''<h1>Fan speed has been set to {}</h1>'''.format(set_fan_speed(speed))
 
 
 def main():
