@@ -33,7 +33,7 @@ def get_creds():
 def get_temperature():
     """Gets the current temperature of the system and returns it to the caller of the function"""
     out = subprocess.Popen(f"ipmitool -I lanplus -H {HOST} -U {USERNAME} -P {PASSWORD} sdr type temperature | grep degrees | cut -d ' ' -f 16", shell=True, stdout=subprocess.PIPE).stdout.read()
-    return out
+    return out.decode('utf-8').split("\n")[0]
 
 
 def main():
