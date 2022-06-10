@@ -18,7 +18,7 @@ import random
 HOST=""
 USERNAME=""
 PASSWORD=""
-
+app = flask.Flask(__name__)
 
 def get_creds():
     """Parses server host, username and password from a conf file in current directory"""
@@ -36,10 +36,19 @@ def get_temperature():
     return out.decode('utf-8').split("\n")[0]
 
 
+@app.route('/', methods=['GET'])
+def home():
+    return '''<h1>Dell powerEdge R710 Fan Controller API by Nee</h1>'''
+
+
+@app.route('/get-temperature', methods=['GET'])
+def home():
+    return '''<h1>{}</h1>'''.format(get_temperature())
+
+
 def main():
     get_creds()
-    print(get_temperature())
-
+    app.run(host='0.0.0.0', port=10001)
 
 if __name__ == "__main__":
     main()
