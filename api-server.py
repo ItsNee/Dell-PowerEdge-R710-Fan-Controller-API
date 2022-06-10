@@ -1,10 +1,6 @@
-from glob import glob
 import flask
-from flask import Flask, request, redirect, url_for, session, escape, jsonify
-import os, subprocess
-from random import *
+import subprocess
 from pip import main
-import os.path
 HOST=""
 USERNAME=""
 PASSWORD=""
@@ -27,6 +23,10 @@ def get_temperature():
 
 def set_fan_speed(speed):
     """Sets the parsed speed as the server''s fan speed"""
+    badChars = ["&", "&&", "`", "``", "|", "||", ";", "os.", "\n", "0x0a", " "]
+    for element in speed:
+        if element in badChars:
+            return "ERROR!"
     if int(speed) <= 60 and int(speed) >=0:
         out = subprocess.Popen(f"ipmitool -I lanplus -H {HOST} -U {USERNAME} -P {PASSWORD} raw 0x30 0x30 0x02 0xff 0x{speed}", shell=True, stdout=subprocess.PIPE).stdout.read()
         return speed
